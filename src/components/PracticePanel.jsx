@@ -33,19 +33,19 @@ export default function PracticePanel() {
 
       <div className="grid grid-cols-3 gap-3 text-sm">
         <div>
-          <label className="block text-slate-600 mb-1">Minutes</label>
-          <input type="range" min="5" max="120" value={duration} onChange={e=>setDuration(Number(e.target.value))} className="w-full" />
-          <div className="text-slate-900 font-medium mt-1">{duration} min</div>
+          <label className="block text-slate-600 mb-1" htmlFor="minutes">Minutes</label>
+          <input id="minutes" type="range" min="5" max="120" value={duration} onChange={e=>setDuration(Number(e.target.value))} className="w-full" />
+          <div className="text-slate-900 font-medium mt-1" aria-live="polite">{duration} min</div>
         </div>
         <div>
-          <label className="block text-slate-600 mb-1">Attempts</label>
-          <input type="range" min="5" max="200" value={attempts} onChange={e=>setAttempts(Number(e.target.value))} className="w-full" />
-          <div className="text-slate-900 font-medium mt-1">{attempts}</div>
+          <label className="block text-slate-600 mb-1" htmlFor="attempts">Attempts</label>
+          <input id="attempts" type="range" min="5" max="200" value={attempts} onChange={e=>setAttempts(Number(e.target.value))} className="w-full" />
+          <div className="text-slate-900 font-medium mt-1" aria-live="polite">{attempts}</div>
         </div>
         <div>
-          <label className="block text-slate-600 mb-1">Technique</label>
-          <input type="range" min="0" max="100" value={score} onChange={e=>setScore(Number(e.target.value))} className="w-full" />
-          <div className="text-slate-900 font-medium mt-1">{score}</div>
+          <label className="block text-slate-600 mb-1" htmlFor="technique">Technique</label>
+          <input id="technique" type="range" min="0" max="100" value={score} onChange={e=>setScore(Number(e.target.value))} className="w-full" />
+          <div className="text-slate-900 font-medium mt-1" aria-live="polite">{score}</div>
         </div>
       </div>
 
@@ -54,7 +54,7 @@ export default function PracticePanel() {
       </motion.button>
 
       {feedback && (
-        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl bg-slate-900 text-white p-4">
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl bg-slate-900 text-white p-4" role="status" aria-live="polite">
           <div className="flex items-center justify-between">
             <div>
               <div className="text-sm text-white/70">XP Earned</div>

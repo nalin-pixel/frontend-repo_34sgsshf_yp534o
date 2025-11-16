@@ -1,11 +1,12 @@
-import { useEffect, useMemo, useState } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
 
 export default function TutorialPlayer() {
   const [steps, setSteps] = useState([])
   const [idx, setIdx] = useState(0)
   const [speed, setSpeed] = useState(1)
   const baseUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'
+  const shouldReduce = useReducedMotion()
 
   useEffect(() => {
     fetch(`${baseUrl}/api/tutorial`).then(r => r.json()).then(setSteps)
@@ -26,9 +27,9 @@ export default function TutorialPlayer() {
       <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 to-slate-800">
         <motion.div
           key={`${idx}-${speed}`}
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4 }}
+          initial={shouldReduce ? { opacity: 0 } : { opacity: 0, scale: 0.98 }}
+          animate={shouldReduce ? { opacity: 1 } : { opacity: 1, scale: 1 }}
+          transition={{ duration: shouldReduce ? 0.1 : 0.4 }}
           className="absolute inset-0 flex items-center justify-center"
         >
           <div className="text-center px-6">
@@ -45,13 +46,13 @@ export default function TutorialPlayer() {
 
       <div className="mt-4 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <button onClick={prev} className="px-3 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800">Prev</button>
-          <button onClick={next} className="px-3 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800">Next</button>
+          <button onClick={prev} className="px-3 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800" aria-label="Previous step">Prev</button>
+          <button onClick={next} className="px-3 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800" aria-label="Next step">Next</button>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2" role="group" aria-label="Playback speed">
           <span className="text-sm text-slate-600">Speed</span>
           {[0.5, 0.75, 1, 1.25].map(s => (
-            <button key={s} onClick={() => setSpeed(s)} className={`px-2.5 py-1.5 rounded-md text-sm ${speed===s? 'bg-indigo-600 text-white':'bg-slate-200 text-slate-800 hover:bg-slate-300'}`}>{s}x</button>
+            <button key={s} onClick={() => setSpeed(s)} className={`px-2.5 py-1.5 rounded-md text-sm ${speed===s? 'bg-indigo-600 text-white':'bg-slate-200 text-slate-800 hover:bg-slate-300'}`} aria-pressed={speed===s}>{s}x</button>
           ))}
         </div>
       </div>
